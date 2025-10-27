@@ -17,10 +17,10 @@ from konlpy.tag import Okt
 
 okt = Okt()
 from glob import glob
-from dataset.text_cleaner import clean_text
-from dataset.korean_sentence_splitter import split_sentences
-from dataset.korean_tokenizer import tokenize_korean_text
-from dataset.wikiextractor import extract_text_from_wiki_dump
+from datasets.text_cleaner import clean_text
+from datasets.korean_sentence_splitter import split_sentences
+from datasets.korean_tokenizer import tokenize_korean_text
+from datasets.wikiextractor import extract_text_from_wiki_dump
 
 
 def download_wikipedia_dump(url, output_path):
