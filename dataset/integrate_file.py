@@ -27,4 +27,3 @@ if __name__ == "__main__":
     input_files = ["./data/modu.txt", "./data/sejong.txt", "./data/wiki.txt"]
     output_file = "./data/train_default.txt"
     integrate_files(input_files, output_file)
-    main()
