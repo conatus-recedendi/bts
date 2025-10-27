@@ -1,0 +1,2 @@
+
+../fasttext/fasttext skipgram -input dataset/data/train.txt -output model/fasttext_model -dim 300 -epoch 5 -minCount 10 -minsc 3 -maxsc 6 -minjn 1 -maxjn 0 -minn 1 -maxn 0 -ws 5 -neg 5 -loss ns -thread 16 -lr 0.025
