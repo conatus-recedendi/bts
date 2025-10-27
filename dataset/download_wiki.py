@@ -17,10 +17,6 @@ from konlpy.tag import Okt
 
 okt = Okt()
 from glob import glob
-from datasets.text_cleaner import clean_text
-from datasets.korean_sentence_splitter import split_sentences
-from datasets.korean_tokenizer import tokenize_korean_text
-from datasets.wikiextractor import extract_text_from_wiki_dump
 
 
 def download_wikipedia_dump(url, output_path):
@@ -43,6 +39,34 @@ def decompress_bz2(input_path, output_path):
         shutil.copyfileobj(file, out_file)
 
 
+def extract_text_from_wiki_dump(input_path, output_dir):
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    context = ET.iterparse(input_path, events=("end",))
+    for event, elem in tqdm(context, desc="Extracting Text", ncols=100):
+        if elem.tag.endswith("page"):
+            title = elem.find("{http://www.mediawiki.org/xml/export-0.10/}title").text
+            text_elem = elem.find(
+                "{http://www.mediawiki.org/xml/export-0.10/}revision/{http://www.mediawiki.org/xml/export-0.10/}text"
+            )
+            if text_elem is not None and text_elem.text:
+                text = text_elem.text
+                # Clean the text
+                text = re.sub(r"<[^>]+>", "", text)  # Remove XML tags
+                text = re.sub(r"\{\{[^}]+\}\}", "", text)  # Remove templates
+                text = re.sub(r"\[\[[^\]]+\]\]", "", text)  # Remove links
+                text = re.sub(r"==+[^=]+==+", "", text)  # Remove headings
+                text = re.sub(r"\s+", " ", text)  # Normalize whitespace
+
+                # Save to file
+                safe_title = re.sub(r"[\\/*?\"<>|:]", "_", title)
+                output_file = output_dir / f"{safe_title}.txt"
+                with open(output_file, "w", encoding="utf-8") as f:
+                    f.write(text)
+            elem.clear()
+
+
 def process_wikipedia_dump(input_path, output_dir):
     extract_text_from_wiki_dump(input_path, output_dir)
 
@@ -50,10 +74,13 @@ def process_wikipedia_dump(input_path, output_dir):
 def process_file(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
         text = f.read()
-    text = clean_text(text)
-    sentences = split_sentences(text)
-    tokenized_sentences = [tokenize_korean_text(sent, okt) for sent in sentences]
-    return tokenized_sentences
+    # text = clean_text(text)
+    # sentences = split_sentences(text)
+    # sentences = re.split(r'(?<=[.!?]) +', text)
+    # tokenized_sentences = tokenize_sentences(sentences)
+    # tokenized_sentences = [tokenize_korean_text(sent, okt) for sent in sentences]
+
+    return text
 
 
 def save_tokenized_sentences(tokenized_sentences, output_path):
@@ -70,6 +97,7 @@ def main():
     decompressed_path = "kowiki-latest-pages-articles.xml"
     extracted_text_dir = "wiki_extracted"
     tokenized_output_path = "dataset/data/train.txt"
+
     # Step 1: Download Wikipedia dump
     download_wikipedia_dump(wiki_dump_url, download_path)
     # Step 2: Decompress the dump
