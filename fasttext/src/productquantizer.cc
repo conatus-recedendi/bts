@@ -146,7 +146,7 @@ void ProductQuantizer::train(int32_t n, const real * x) {
   delete [] xslice;
 }
 
-real ProductQuantizer::mulcode(const Vector& x, const uint8_t* codes,
+real ProductQuantizer::mulcode(const std::Vector& x, const uint8_t* codes,
                                int32_t t, real alpha) const {
   real res = 0.0;
   auto d = dsub_;
@@ -161,7 +161,7 @@ real ProductQuantizer::mulcode(const Vector& x, const uint8_t* codes,
   return res * alpha;
 }
 
-void ProductQuantizer::addcode(Vector& x, const uint8_t* codes,
+void ProductQuantizer::addcode(std::Vector& x, const uint8_t* codes,
                                int32_t t, real alpha) const {
   auto d = dsub_;
   const uint8_t* code = codes + nsubq_ * t;
