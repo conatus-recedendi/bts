@@ -1,7 +1,7 @@
 ADD_LINE = "-"
 END_CHAR = "c"
 
-subchar_dict = {
+special_subchar_dict = {
     # 초성/종성 공통
     "ㄱ": "ㄱ",
     "ㄲ": "ㄲ_ㄱㄱ",
