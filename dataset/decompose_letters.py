@@ -3,11 +3,43 @@ import sys
 import codecs
 import hgtk
 from tqdm import tqdm
-from subchar_rule import subchar_dict, subchar_reverse_dict
+from subchar_rule import special_subchar_dict, subchar_dict, subchar_reverse_dict
 import jamotools
 
 END_CHAR = "/"
 END_JAMO = "^"
+
+
+def experience_jamo_split(sentence, split_stroke=True, split_cji=True):
+    result = []
+    for word in sentence.split(" "):
+        decomposed_word = ""
+        for char in word:
+            try:
+                cho_joong_jong = hgtk.letter.decompose(char)
+                char_seq = ""
+
+                cho, joong, jong = cho_joong_jong
+                cho = special_subchar_dict[cho] if split_stroke else cho
+                joong = special_subchar_dict[joong] if split_cji else joong
+                jong = (
+                    special_subchar_dict[jong]
+                    if split_stroke and len(jong) > 0
+                    else jong
+                )
+                cho += END_JAMO
+                joong += END_JAMO
+                jong += END_JAMO
+
+                char_seq = cho + joong + jong
+                decomposed_word += char_seq + END_CHAR
+
+            except hgtk.exception.NotHangulException:
+                got_exception = True
+                decomposed_word += char
+                continue
+        result.append(decomposed_word.strip())
+    return " ".join(result)
 
 
 def jamo_split(sentence, split_stroke=True, split_cji=True):
@@ -102,17 +134,30 @@ def main():
     SPLIT_STROKE = eval(sys.argv[3])
     SPLIT_CJI = eval(sys.argv[4])
     num_lines = 0
+    my_experience_flag = True
 
-    with codecs.open(OUTPUT_FILE_PATH, "w", encoding="utf8") as jamo:
-        with codecs.open(INPUT_FILE_PATH, "r", encoding="utf8") as input_:
-            for sentence in tqdm(
-                input_, desc="Parsing Text", ncols=100, total=19270697
-            ):
-                jamo_sentences = jamo_split(
-                    sentence.strip(), split_stroke=SPLIT_STROKE, split_cji=SPLIT_CJI
-                )
-                jamo.write(jamo_sentences + "\n")
-                num_lines += 1
+    if my_experience_flag:
+        with codecs.open(OUTPUT_FILE_PATH, "w", encoding="utf8") as jamo:
+            with codecs.open(INPUT_FILE_PATH, "r", encoding="utf8") as input_:
+                for sentence in tqdm(
+                    input_, desc="Parsing Text", ncols=100, total=19270697
+                ):
+                    jamo_sentences = experience_jamo_split(
+                        sentence.strip(), split_stroke=SPLIT_STROKE, split_cji=SPLIT_CJI
+                    )
+                    jamo.write(jamo_sentences + "\n")
+                    num_lines += 1
+    else:
+        with codecs.open(OUTPUT_FILE_PATH, "w", encoding="utf8") as jamo:
+            with codecs.open(INPUT_FILE_PATH, "r", encoding="utf8") as input_:
+                for sentence in tqdm(
+                    input_, desc="Parsing Text", ncols=100, total=19270697
+                ):
+                    jamo_sentences = jamo_split(
+                        sentence.strip(), split_stroke=SPLIT_STROKE, split_cji=SPLIT_CJI
+                    )
+                    jamo.write(jamo_sentences + "\n")
+                    num_lines += 1
 
 
 if __name__ == "__main__":
