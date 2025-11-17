@@ -1,9 +1,9 @@
-../dataset/python decompose_letters.py WS353_korean.csv WS353_korean_default.csv False False
-../dataset/python decompose_letters.py WS353_korean.csv WS353_korean_stroke.csv True False
-../dataset/python decompose_letters.py WS353_korean.csv WS353_korean_cji.csv False True
-../dataset/python decompose_letters.py WS353_korean.csv WS353_korean_bts.csv True True
+python ../dataset/decompose_letters.py ../dataset/WS353_korean.csv ../dataset/WS353_korean_default.csv False False
+python ../dataset/decompose_letters.py ../dataset/WS353_korean.csv ../dataset/WS353_korean_default.csv False False
+python ../dataset/decompose_letters.py ../dataset/WS353_korean.csv ../dataset/WS353_korean_default.csv False False
+python ../dataset/decompose_letters.py ../dataset/WS353_korean.csv ../dataset/WS353_korean_bts.csv True True
 
-../dataset/python decompose_letters.py word_analogy_korean.txt word_analogy_korean_default.txt False False
-../dataset/python decompose_letters.py word_analogy_korean.txt word_analogy_korean_stroke.csv True False
-../dataset/python decompose_letters.py word_analogy_korean.txt word_analogy_korean_cji.csv False True
-../dataset/python decompose_letters.py word_analogy_korean.txt word_analogy_korean_bts.csv True True
+python ../dataset/decompose_letters.py ../dataset/word_analogy_korean.txt ../dataset/word_analogy_korean_default.txt False False
+python ../dataset/decompose_letters.py ../dataset/word_analogy_korean.txt ../dataset/word_analogy_korean_stroke.txt True False
+python ../dataset/decompose_letters.py ../dataset/word_analogy_korean.txt ../dataset/word_analogy_korean_cji.txt False True
+python ../dataset/decompose_letters.py ../dataset/word_analogy_korean.txt ../dataset/word_analogy_korean_bts.txt True True
