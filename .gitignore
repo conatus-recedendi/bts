@@ -1,2 +1,5 @@
 *.txt
 *.csv
+
+!dataset/word_analogy_korean.txt
+!dataset/WS353_korean.csv
