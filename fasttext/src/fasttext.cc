@@ -565,7 +565,7 @@ void FastText::analogy_test(std::istream& in, int32_t k) {
 
       distance += 1-cos(query, answer);
       nexamples++;
-      if nexamples % 100 == 0 {
+      if (nexamples % 100 == 0) {
         std::cerr << words[0] << " " << words[1] << " " << words[2] << " | " << words[3] << "\t" << 1-cos(query, answer) << std::endl;
       }
       
