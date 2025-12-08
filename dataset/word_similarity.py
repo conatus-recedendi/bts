@@ -7,7 +7,7 @@ from scipy import stats
 
 # $ src/fasttext print-word-vectors results/analogy/6_28.bin < data/word_similarity_decomposed/word_similarity_decomposed_stcji.txt > vectors/stcji_vectors.txt
 
-# python word_similarity.py WS353_korean_bts.csv
+# python word_similiarty.py WS353_korean_bts.csv
 
 
 def create_ws_decomposed(level="scji"):
@@ -37,16 +37,16 @@ def get_vec(line):
 
 
 if __name__ == "__main__":
-
-    with open("data/WS353_korean.csv", "r") as g:
+    file1 = sys.argv[1]
+    file2 = sys.argv[2]
+    with open(file1, "r") as g:
         sims = []
         for line in g.readlines()[1:]:
             word1, word2, sim = line.strip().split(",")
             sims.append(eval(sim))
 
     cosines = []
-    MODEL_CODE = sys.argv[1]
-    with open(f"vectors/word_similarity/{MODEL_CODE}_vectors.txt", "r") as f:
+    with open(file2, "r") as f:
         pair = []
         for line in f.readlines():
             word, vec = get_vec(line)
@@ -54,5 +54,5 @@ if __name__ == "__main__":
             if len(pair) == 2:
                 cosines.append(cosine_sim(pair[0], pair[1]))
                 pair = []
-    print(MODEL_CODE)
+    # print(MODEL_CODE)
     print("{:.3f}".format(stats.spearmanr(sims, cosines).correlation))
