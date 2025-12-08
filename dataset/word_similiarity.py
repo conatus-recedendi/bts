@@ -1,5 +1,4 @@
 import sys, io
-import fasttext
 import numpy as np
 from tqdm import tqdm
 from decompose_letters import jamo_split, reconstruct_word
