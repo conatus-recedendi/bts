@@ -134,7 +134,7 @@ def main():
     SPLIT_STROKE = eval(sys.argv[3])
     SPLIT_CJI = eval(sys.argv[4])
     num_lines = 0
-    my_experience_flag = True
+    my_experience_flag = False
 
     if my_experience_flag:
         with codecs.open(OUTPUT_FILE_PATH, "w", encoding="utf8") as jamo:
