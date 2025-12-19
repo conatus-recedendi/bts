@@ -16,6 +16,7 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras import backend as K
 from tensorflow.keras.metrics import Precision, Recall
+from tensorflow.keras.metrics import Metric
 
 
 END_CHAR = "&"
@@ -62,6 +63,26 @@ def f1score(y_target, y_pred):
     _f1score = (2 * _recall * _precision) / (_recall + _precision + K.epsilon())
 
     return _f1score
+
+
+class F1Score(Metric):
+    def __init__(self, **kwargs):
+        super(F1Score, self).__init__(**kwargs)
+        self.precision_metric = Precision()
+        self.recall_metric = Recall()
+
+    def update_state(self, y_true, y_pred, sample_weight=None):
+        self.precision_metric.update_state(y_true, y_pred, sample_weight)
+        self.recall_metric.update_state(y_true, y_pred, sample_weight)
+
+    def result(self):
+        p = self.precision_metric.result()
+        r = self.recall_metric.result()
+        return 2 * (p * r) / (p + r + K.epsilon())
+
+    def reset_state(self):
+        self.precision_metric.reset_state()
+        self.recall_metric.reset_state()
 
 
 # python nsmc.py sisg_jm pretrain 10 0.5 0.5
@@ -206,7 +227,7 @@ def main():
         model.compile(
             optimizer="adam",
             loss="binary_crossentropy",
-            metrics=["accuracy", Precision(), Recall(), f1score],
+            metrics=["accuracy", Precision(), Recall(), F1Score()],
         )
 
         model.fit(
