@@ -11,8 +11,8 @@ import tensorflow as tf
 from tensorflow.keras import optimizers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Flatten, Dense, Embedding, Conv1D, LSTM, Dropout
-from tensorflow.python.keras.preprocessing.sequence import pad_sequences
-from tensorflow.python.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras import backend as K
 
@@ -60,7 +60,7 @@ def f1score(y_target, y_pred):
 def main():
     train_code = sys.argv[1]  # from dataset
     """
-    default, sisg_jm, stroke, cji, bts
+    default, sisg_jm, sisg_stroke, sisg_cji, sisg_bts
     """
     vocab = sys.argv[2]
     epochs = eval(sys.argv[3])
