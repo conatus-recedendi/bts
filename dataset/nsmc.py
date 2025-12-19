@@ -26,6 +26,9 @@ def recall(y_target, y_pred):
     y_target_yn = K.round(K.clip(y_target, 0, 1))
     y_pred_yn = K.round(K.clip(y_pred, 0, 1))
 
+    y_pred_yn = K.cast(y_pred_yn, "float32")
+    y_target_yn = K.cast(y_target_yn, "float32")
+
     count_true_positive = K.sum(y_target_yn * y_pred_yn)
 
     count_true_positive_false_negative = K.sum(y_target_yn)
@@ -38,6 +41,9 @@ def recall(y_target, y_pred):
 def precision(y_target, y_pred):
     y_pred_yn = K.round(K.clip(y_pred, 0, 1))
     y_target_yn = K.round(K.clip(y_target, 0, 1))
+
+    y_target_yn = K.cast(y_target_yn, "float32")
+    y_pred_yn = K.cast(y_pred_yn, "float32")
 
     count_true_positive = K.sum(y_target_yn * y_pred_yn)
 
