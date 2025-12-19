@@ -58,14 +58,21 @@ def f1score(y_target, y_pred):
 
 # python nsmc.py sisg_jm pretrain 10 0.5 0.5
 def main():
-    train_code = sys.argv[1]
+    train_code = sys.argv[1]  # from dataset
+    """
+    default, sisg_jm, stroke, cji, bts
+    """
     vocab = sys.argv[2]
     epochs = eval(sys.argv[3])
     dropout = eval(sys.argv[4])
     recurrent_dropout = eval(sys.argv[5])
+    model = sys.argv[6]  # from model .vec
+    """
+    sisg, sisg_ch, sisg_bts, sisg_jm, sisg_stroke, sisg_cji, sisg_ch4_jm, sisg_ch6_jm
+    """
     # decompose_level = 4 if "stroke" in train_code else 5 if "cji" in train_code else 6
     if vocab == "pretrain":
-        FNAME = f"../model/{train_code}.vec"
+        FNAME = f"../model/{model}.vec"
     else:
         # FNAME = f"./vectors/sent_analysis/{train_code}_vectors.txt"
         # error
