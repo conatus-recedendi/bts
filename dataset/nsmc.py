@@ -15,6 +15,8 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras import backend as K
+from tensorflow.keras.metrics import Precision, Recall
+
 
 END_CHAR = "&"
 END_JAMO = "^"
@@ -161,13 +163,13 @@ def main():
 
     dev_sequence = tokenizer.texts_to_sequences(text_dev)  # max 40
     dev_inputs = pad_sequences(dev_sequence, maxlen=MAX_SEQUENCE_LENGTH, padding="post")
-    dev_labels = np.array(dev_data["label"])
+    dev_labels = np.array(dev_data["label"], dtype=np.float32)
 
     test_sequence = tokenizer.texts_to_sequences(text_test)  # max 38
     test_inputs = pad_sequences(
         test_sequence, maxlen=MAX_SEQUENCE_LENGTH, padding="post"
     )
-    test_labels = np.array(test_data["label"])
+    test_labels = np.array(test_data["label"], dtype=np.float32)
 
     word_size = len(tokenizer.word_index) + 1
     EMBEDDING_DIM = 300
@@ -204,7 +206,7 @@ def main():
         model.compile(
             optimizer="adam",
             loss="binary_crossentropy",
-            metrics=["accuracy", precision, recall, f1score],
+            metrics=["accuracy", Precision(), Recall(), f1score],
         )
 
         model.fit(
