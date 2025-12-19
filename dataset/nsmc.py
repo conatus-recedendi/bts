@@ -151,7 +151,7 @@ def main():
     train_inputs = pad_sequences(
         train_sequence, maxlen=MAX_SEQUENCE_LENGTH, padding="post"
     )
-    train_labels = np.array(train_data["label"])
+    train_labels = np.array(train_data["label"], dtype=np.float32)
 
     dev_sequence = tokenizer.texts_to_sequences(text_dev)  # max 40
     dev_inputs = pad_sequences(dev_sequence, maxlen=MAX_SEQUENCE_LENGTH, padding="post")
@@ -173,7 +173,7 @@ def main():
         if embedding_vector is not None:
             embedding_matrix[idx] = embedding_vector
 
-    random_seeds = [42, 99]
+    random_seeds = [42]
     acc_total = 0
     precision_total = 0
     recall_total = 0
